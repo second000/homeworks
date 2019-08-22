@@ -30,7 +30,7 @@ function returnFirstArgument(arg) {
  Пример:
    sumWithDefaults(10) вернет 110
  */
-function sumWithDefaults(a, b) {
+function sumWithDefaults(a, b = 100) {
     return a + b;
 }
 
@@ -43,6 +43,7 @@ function sumWithDefaults(a, b) {
    returnFnResult(() => 'привет') вернет 'привет'
  */
 function returnFnResult(fn) {
+    return fn();
 }
 
 /*
@@ -58,9 +59,13 @@ function returnFnResult(fn) {
    console.log(f()); // выведет 12
    console.log(f()); // выведет 13
  */
-function returnCounter(number) {
-}
+function returnCounter(number = 0) {
+    return function increaseNumber() {
+        number += 1;
 
+        return number;
+    }
+}
 /*
  Задание 5 *:
 
@@ -71,6 +76,13 @@ function returnCounter(number) {
    returnArgumentsArray(1, 2, 3) вернет [1, 2, 3]
  */
 function returnArgumentsArray() {
+    let argumentsArray = [];
+
+    for (let value of arguments) {
+        argumentsArray.push(value);
+    }
+
+    return argumentsArray;
 }
 
 /*
@@ -88,8 +100,16 @@ function returnArgumentsArray() {
 
    console.log(newSum()) выведет 6
  */
-function bindFunction(fn) {
+function bindFunction(fn, ...args) {
+    return function newFn() {
+        return fn(...args);
+    }
 }
+
+// function sum(a, b) {
+//    return a + b;
+//  }
+// console.log(bindFunction(sum, 2, 8));
 
 export {
     returnFirstArgument,
