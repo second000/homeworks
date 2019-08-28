@@ -1,4 +1,5 @@
 'use strict';
+
 /* ДЗ 2 - работа с массивами и объектами */
 
 /*
@@ -22,9 +23,11 @@ function forEach(array, fn) {
  */
 function map(array, fn) {
     let newArray = [];
+
     for (let i = 0; i < array.length; i++) {
         newArray[i] = fn(array[i], i, array);
     }
+
     return newArray;
 }
 
@@ -38,9 +41,11 @@ function map(array, fn) {
 function reduce(array, fn, initial) {
     let prev = initial || array[0];
     let i = initial ? 0 : 1;
+
     for (i; i < array.length; i++) {
         prev = fn(prev, array[i], i, array);
     }
+
     return prev;
 }
 
@@ -70,12 +75,13 @@ function upperProps(obj) {
  */
 function slice(array, from, to = (array.length - 1)) {
     let newArr = [];
+
     for (let i = from; i < to && i < (array.length - 1); i++) {
         newArr[i - from] = array[i];
     }
+
     return newArr;
 }
-
 
 /*
  Задание 6 *:
@@ -83,8 +89,9 @@ function slice(array, from, to = (array.length - 1)) {
  Функция принимает объект и должна вернуть Proxy для этого объекта
  Proxy должен перехватывать все попытки записи значений свойств и возводить это значение в квадрат
  */
+
 function createProxy(obj) {
-    let proxy = new Proxy(obj, {});
+
 }
 
 export {
