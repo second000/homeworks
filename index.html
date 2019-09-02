@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <input type="text" class="text" id="phone">
+<script>
+  const phone = document.querySelector('#phone');
+
+  phone.addEventListener('keydown', function (event) {
+      let isDigit = false;
+
+      if (event.key >= 0 && event.key <= 9) {
+          isDigit = true;
+      }
+      console.log(isDigit);
+      return isDigit;
+  })
+</script>
+<!--<script>
+function findAllPSiblings(where) {
+    let result = [];
+    let tagP = document.getElementsByTagName('p');
+    for (var i = 0; i < where.children.length; i++) {
+        if (where.children[i].nextElementSibling === tagP[i]) {
+            result.push(where.children[i]);
+        }
+    }
+    return result;
+}
+    console.log(findAllPSiblings(document.body));
+</script>-->
+</body>
+</html>
