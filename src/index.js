@@ -1,4 +1,4 @@
-/* ДЗ 4 - работа с DOM */
+// ДЗ 4 - работа с DOM
 
 /*
  Задание 1:
@@ -9,7 +9,8 @@
 
  Пример:
    createDivWithText('loftschool') // создаст элемент div, поместит в него 'loftschool' и вернет созданный элемент
- */
+  */
+
 function createDivWithText(text) {
     const element = document.createElement('div');
 
@@ -26,6 +27,7 @@ function createDivWithText(text) {
  Пример:
    prepend(document.querySelector('#one'), document.querySelector('#two')) // добавит элемент переданный первым аргументом в начало элемента переданного вторым аргументом
  */
+
 const prepend = (what, where) => where.prepend(what);
 
 /*
@@ -49,15 +51,15 @@ const prepend = (what, where) => where.prepend(what);
  */
 
 function findAllPSiblings(where) {
-    var result = [];
+    let arraySiblingsP = [];
 
-    for (var i = 0; i < where.children.length; i++) {
-        if (where.children[i].nextElementSibling === P) {
-            result.push(where.children[i]);
+    for (const node of where.childNodes) {
+        if (node.nodeName === 'P') {
+            arraySiblingsP.push(node.previousElementSibling);
         }
     }
 
-    return result;
+    return arraySiblingsP;
 }
 
 /*
@@ -79,14 +81,15 @@ function findAllPSiblings(where) {
  */
 
 function findError(where) {
-    var result = [];
+    let arrayResult = [];
 
-    for (var i = 0; i < where.children.length; i++) {
-        result.push(where.children[i].innerText);
+    for (const node of where.children) {
+        arrayResult.push(node.innerText);
     }
 
-    return result;
+    return arrayResult;
 }
+
 /*
  Задание 5:
 
@@ -100,9 +103,9 @@ function findError(where) {
    должно быть преобразовано в <div></div><p></p>
  */
 function deleteTextNodes(where) {
-    for (var i = 0; i < where.childNodes.length; i++) {
-        if (where.childNodes[i].nodeType === 3) {
-            where.childNodes[i].remove();
+    for (const node of where.childNodes) {
+        if (node.nodeType === 3) {
+            node.remove();
         }
     }
 }
@@ -118,7 +121,15 @@ function deleteTextNodes(where) {
    После выполнения функции, дерево <span> <div> <b>привет</b> </div> <p>loftchool</p> !!!</span>
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
+
 function deleteTextNodesRecursive(where) {
+    for (const node of where.childNodes) {
+        if (node.nodeType === 1) {
+            deleteTextNodesRecursive(node);
+        } else if (node.nodeType === 3) {
+            node.remove();
+        }
+    }
 }
 
 /*
@@ -141,6 +152,7 @@ function deleteTextNodesRecursive(where) {
      texts: 3
    }
  */
+
 function collectDOMStat(root) {
 }
 
@@ -176,6 +188,7 @@ function collectDOMStat(root) {
      nodes: [div]
    }
  */
+
 function observeChildNodes(where, fn) {
 }
 
