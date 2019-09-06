@@ -1,3 +1,5 @@
+'use strict';
+
 // ДЗ 4 - работа с DOM
 
 /*
@@ -121,17 +123,20 @@ function deleteTextNodes(where) {
    После выполнения функции, дерево <span> <div> <b>привет</b> </div> <p>loftchool</p> !!!</span>
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
-
 function deleteTextNodesRecursive(where) {
-    for (const node of where.childNodes) {
-        if (node.nodeType === 1) {
-            deleteTextNodesRecursive(node);
-        } else if (node.nodeType === 3) {
-            node.remove();
+    if (where.childNodes.length === 0) {
+
+        return;
+    }
+    for (let i = 0; i < where.childNodes.length; i++) {
+        if (where.childNodes[i].nodeType == 3) {
+            where.childNodes[i].remove();
+            i--;
+        } else if (where.childNodes[i].nodeType == 1) {
+            deleteTextNodesRecursive(where.childNodes[i]);
         }
     }
 }
-
 /*
  Задание 7 *:
 
