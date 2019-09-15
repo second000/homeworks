@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cookie</title>
+    <style>
+        #homework-container {
+            font-family: Geneva, Arial, Helvetica, sans-serif;
+        }
+
+        #homework-container input {
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            padding: 5px;
+            margin: 5px 0;
+        }
+
+        #homework-container table {
+            width: 100%;
+        }
+
+        #homework-container table td,
+        #homework-container table th {
+            padding: 5px;
+            text-align: left;
+        }
+
+        #homework-container tbody tr:nth-child(odd) {
+            background: #ddd;
+        }
+    </style>
+</head>
+<body>
+<div id="homework-container">
+    <div id="filter-block">
+        Поиск cookie: <input type="text" id="filter-name-input" placeholder="имя cookie">
+    </div>
+    <hr>
+    <div id="add-block">
+        Добавить cookie:<br>
+        <input type="text" id="add-name-input" placeholder="имя cookie"><br>
+        <input type="text" id="add-value-input" placeholder="значение cookie"><br>
+        <button id="add-button">добавить cookie</button>
+    </div>
+    <hr>
+    <div id="list-block">
+        Доступные cookie:
+        <table id="list-table">
+            <thead>
+            <tr>
+                <th>имя</th>
+                <th>значение</th>
+                <th>удалить</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- tr добавлять сюда -->
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    const homeworkContainer = document.querySelector('#homework-container');
+    const filterNameInput = homeworkContainer.querySelector('#filter-name-input');
+    const addNameInput = homeworkContainer.querySelector('#add-name-input');
+    const addValueInput = homeworkContainer.querySelector('#add-value-input');
+    const addButton = homeworkContainer.querySelector('#add-button');
+    const listTable = homeworkContainer.querySelector('#list-table tbody');
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const fullCookies = cookieToObject();
+        for (let value in fullCookies) {
+            renderCookie(value, fullCookies[value]);
+        }
+    });
+
+
+    filterNameInput.addEventListener('keyup', function() {
+        listTable.innerHTML = '';
+        const fullCookies = cookieToObject();
+        const chunkCookies = filterNameInput.value;
+        for (let value in fullCookies) {
+            console.log(chunkCookies);
+            if ((value === chunkCookies) || (fullCookies[value] === chunkCookies)) {
+                renderCookie(value, fullCookies[value]);
+            }
+            if (chunkCookies === ''){
+                renderCookie(value, fullCookies[value]);
+            }
+        }
+    });
+
+    addButton.addEventListener('click', () => {
+        addCookie();
+        listTable.innerHTML = '';
+        const fullCookies = cookieToObject();
+        for (let value in fullCookies) {
+            renderCookie(value, fullCookies[value]);
+        }
+    });
+
+    function addCookie() {
+        document.cookie = `${addNameInput.value}=${addValueInput.value}`;
+    }
+
+    function renderCookie(name, value) {
+        const cookieRow = document.createElement('tr');
+        const cookieDataName = document.createElement('td');
+        const cookieDataValue = document.createElement('td');
+        const cookieDataDelete = document.createElement('td');
+        const deleteButton = document.createElement('button');
+
+        cookieDataName.innerText = `${name}`;
+        cookieDataValue.innerText = `${value}`;
+        deleteButton.innerText = 'удалить cookie';
+        deleteButton.addEventListener('click', function () {
+            document.cookie = `${name}=${value};expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+            listTable.removeChild(cookieRow);
+        });
+        cookieRow.appendChild(cookieDataName);
+        cookieRow.appendChild(cookieDataValue);
+        cookieRow.appendChild(cookieDataDelete);
+        cookieDataDelete.appendChild(deleteButton);
+        listTable.appendChild(cookieRow);
+    }
+
+    function cookieToObject() {
+        const cookiesObj = document.cookie.split('; ').reduce((prev, current) => {
+            const [name, value] = current.split('=');
+            prev[name] = value;
+            return prev;
+        }, {});
+        return cookiesObj;
+    }
+</script>
+</body>
