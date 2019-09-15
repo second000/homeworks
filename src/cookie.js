@@ -38,8 +38,9 @@ const addValueInput = homeworkContainer.querySelector('#add-value-input');
 const addButton = homeworkContainer.querySelector('#add-button');
 const listTable = homeworkContainer.querySelector('#list-table tbody');
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
     const fullCookies = cookieToObject();
+
     for (let value in fullCookies) {
         if (fullCookies.hasOwnProperty(value)) {
             renderCookie(value, fullCookies[value]);
@@ -47,32 +48,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-
 filterNameInput.addEventListener('keyup', function() {
-    listTable.innerHTML = '';
-    const fullCookies = cookieToObject();
-    const chunkCookies = filterNameInput.value;
-    for (let value in fullCookies) {
-        if (fullCookies.hasOwnProperty(value)) {
-            if ((value === chunkCookies) || (fullCookies[value] === chunkCookies)) {
-                renderCookie(value, fullCookies[value]);
-            }
-            if (chunkCookies === '') {
-                renderCookie(value, fullCookies[value]);
-            }
-        }
-    }
+    filterCookie();
 });
 
 addButton.addEventListener('click', () => {
     addCookie();
-    listTable.innerHTML = '';
-    const fullCookies = cookieToObject();
-    for (let value in fullCookies) {
-        if (fullCookies.hasOwnProperty(value)) {
-            renderCookie(value, fullCookies[value]);
-        }
-    }
+    filterCookie();
 });
 
 function addCookie() {
@@ -101,12 +83,33 @@ function renderCookie(name, value) {
 }
 
 function cookieToObject() {
-    if (!document.cookie) return;
+    if (!document.cookie) {
+
+        return;
+    }
     let cookiesObj = {};
+
     cookiesObj = document.cookie.split('; ').reduce((prev, current) => {
         const [name, value] = current.split('=');
+
         prev[name] = value;
+
         return prev;
     }, {});
+
     return cookiesObj;
+}
+
+function filterCookie() {
+    listTable.innerHTML = '';
+    const fullCookies = cookieToObject();
+    const chunkCookies = filterNameInput.value;
+
+    for (let value in fullCookies) {
+        if (fullCookies.hasOwnProperty(value)) {
+            if ((value.indexOf(chunkCookies) >= 0) || (fullCookies[value].indexOf(chunkCookies) >= 0)) {
+                renderCookie(value, fullCookies[value]);
+            }
+        }
+    }
 }
